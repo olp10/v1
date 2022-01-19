@@ -1,0 +1,26 @@
+{
+  "name": "v1",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.27.7",
+    "concurrently": "^7.0.0",
+    "eslint": "^8.7.0",
+    "jest": "^27.4.7",
+    "node-sass": "^7.0.1",
+    "prettier": "^2.5.1",
+    "sass": "^1.49.0",
+    "sass-watch": "^0.1.0",
+    "stylelint": "^14.2.0"
+  },
+  "dependencies": {}
+}
