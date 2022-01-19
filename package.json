@@ -5,8 +5,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": ""
+    "test": "sass",
+    "build": "",
+    "browser-sync": "browser-sync start --server --files index.html styles.css",
+    "sass": "sass styles/*.scss styles.css",
+    "dev": "concurrently npm:sass-watch npm:browser-sync",
+    "sass-watch": "sass --watch /*.scss styles.css"
   },
   "keywords": [],
   "author": "",
