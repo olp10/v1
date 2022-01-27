@@ -5,12 +5,14 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "sass",
-    "build": "",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest ./test/*.js",
+    "build": "node ./src/build.js && node-sass styles/styles.scss dist/styles.css",
     "browser-sync": "browser-sync start --server --files index.html styles.css",
-    "sass": "sass styles/*.scss styles.css",
+    "sass": "node-sass --source-map-embed styles/styles.scss styles.css",
     "dev": "concurrently npm:sass-watch npm:browser-sync",
-    "sass-watch": "sass --watch /*.scss styles.css"
+    "sass-watch": "node-sass --watch styles/styles.scss --recursive styles.css",
+    "prettier": "prettier --write .",
+    "lint": "stylelint styles.scss styles/*.scss"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +26,11 @@
     "prettier": "^2.5.1",
     "sass": "^1.49.0",
     "sass-watch": "^0.1.0",
-    "stylelint": "^14.2.0"
+    "stylelint": "^14.2.0",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard": "^24.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cpy-cli": "^3.1.1"
+  }
 }
