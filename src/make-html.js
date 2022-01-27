@@ -1,28 +1,14 @@
-// import { addResultsToArray } from './read-files.js';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+import { getData } from './read-files.js';
 
-export function makeHTML(entry) {
-  const results = addResultsToArray(entry);
-  const template = `
-  <!DOCTYPE html>
-  <html>
-    <head>
-        <title>${results.metadata.title}</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <section>
-            HTML
-            <p>Skrifað: DATE</p>
-        </section>
-    </body>
-  `
-  return "";
-}
+const data = getData();
+const OUTPUT_DIR = './dist';
 
-
-// Búa til ul lista af skráarnöfnum með link á þær
-export function makeIndex(entries) {
-  const dataset = makeDataset(/* Read-files, fylki af nöfnum á skránnum */)
+// Búa til <ul> lista af skráarnöfnum með link á þær
+export async function makeIndex() {
+  const dataset = await makeDataset();
+  const title = 'Gagnavinnsla';
   const template = `
   <!DOCTYPE html>
   <head>
@@ -31,19 +17,21 @@ export function makeIndex(entries) {
   </head>
   <body>
   ${dataset}
+  </body>
   `;
 
-
-  let list = '';
-  for (const entry in entries) {
-    const link = `<li><a href=""></a></li>`;
-  }
-  return `<ul>${list}</ul>`;
+  return template;
 }
 
-export function makeDataset(title = []) {
+// TODO
+// Komin virkni til að búa til cols fyrir hvert gagnasett, þarf að laga fyrir
+// Síðustu, jafnvel bæta fyrir responsive ef tími gefst
+
+export async function makeDataset() {
   let cardTitle = ``;
-  for(let i = 0; i < title.length; i++) {
+  const data = await getData();
+  for(let i = 0; i < data.length; i++) {
+    const titler = await data[i].title;
     // Ný röð
     if (i % 3 == 0) {
       cardTitle += `
@@ -52,12 +40,12 @@ export function makeDataset(title = []) {
     }
     cardTitle += `
     <div class="col col-4">
-      <h2>${title[i]}</h2>
+      <h2>${titler}</h2> 
     </div>
     `;
 
     // Loka röð
-    if (i % 3 == 0) {
+    if ((i+1) % 3 == 0) {
       cardTitle += `
       </div>
       `;
@@ -66,6 +54,9 @@ export function makeDataset(title = []) {
   return cardTitle;
 }
 
-export function entryTemplate() {
-  return '';
-}
+
+export async function make() {
+  const filename = join(OUTPUT_DIR, '/index.html');
+  const x = await makeIndex();
+  await writeFileSync(filename, x);
+} 
