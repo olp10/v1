@@ -1,5 +1,5 @@
-import { parse } from 'number-parsing';
-import { getData } from './read-files.js';
+import { parse } from "number-parsing";
+import { getData } from "./read-files.js";
 
 export async function parseFile(input) {
   const x = parse;
