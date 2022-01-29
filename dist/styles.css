@@ -197,18 +197,17 @@ h1 {
   text-align: center; }
 
 a {
-  text-decoration: none;
-  color: #646464; }
+  color: #646464;
+  text-decoration: none; }
 
 .cardholder {
-  width: 80%;
   margin: 10px;
-  margin: 10px; }
+  width: 80%; }
 
 .card {
-  margin: 0 auto;
-  width: 100%;
-  background-color: #55A4ff;
-  border: 2px solid black;
+  background-color: #55a4ff;
+  border: 2px solid #000;
+  border-radius: 2%;
   font-size: 2rem;
-  border-radius: 2%; }
+  margin: 0 auto;
+  width: 100%; }

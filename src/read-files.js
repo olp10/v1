@@ -1,15 +1,14 @@
-import { join } from "path";
-import { readdir, readFile, stat } from "fs/promises";
-import { mkdir } from "fs/promises";
+import { join } from 'path';
+import { readdir, readFile, stat, mkdir } from 'fs/promises';
 
-const DATA_DIR = "./data";
-const OUTPUT_DIR = "./dist";
+const DATA_DIR = './data';
+const OUTPUT_DIR = './dist';
 
 // Klárt fall til að athuga hvort mappa sé til
 /**
- * 
- * @param {string} dir 
- * @returns 
+ *
+ * @param {string} dir
+ * @returns
  */
 async function direxists(dir) {
   try {
@@ -27,7 +26,7 @@ async function direxists(dir) {
 export async function getData() {
   // Lesa skráarnöfn úr möppu
   const files = await readdir(DATA_DIR);
-  let filesInFolder = [];
+  const filesInFolder = [];
 
   // búa til ./dist ef ekki til nú þegar
   if (!(await direxists(OUTPUT_DIR))) {
@@ -37,18 +36,21 @@ export async function getData() {
   // Búa til object með skráarnafni og array með tölum sem þarf að parsa seinna
   for (const file of files) {
     const path = join(DATA_DIR, file);
+    // eslint-disable-next-line no-await-in-loop
     const info = await stat(path);
 
     // Gera ekkert ef "skráin" er mappa
     if (info.isDirectory()) {
+      // eslint-disable-next-line no-continue
       continue;
     }
 
+    // eslint-disable-next-line no-await-in-loop
     const data = await readFile(path);
-    const str = data.toString("utf-8");
-    let results = {
+    const str = data.toString('utf-8');
+    const results = {
       title: file,
-      nums: str.split("\n"),
+      nums: str.split('\n'),
     };
     filesInFolder.push(results);
   }

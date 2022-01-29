@@ -1,8 +1,8 @@
-import { readFile, readdir } from "fs/promises";
+// import { readFile, readdir } from "fs/promises";
 
-import { make } from "./make-html.js";
+import { make } from './make-html.js';
 
-const DATA_DIR = "./data";
+// const DATA_DIR = './data';
 
 async function main() {
   await make();
