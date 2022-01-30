@@ -1,5 +1,6 @@
+import { mkdir, readdir, readFile, stat } from 'fs/promises';
 import { join } from 'path';
-import { readdir, readFile, stat, mkdir } from 'fs/promises';
+import { parse } from './parser.js';
 
 const DATA_DIR = './data';
 const OUTPUT_DIR = './dist';
@@ -50,9 +51,12 @@ export async function getData() {
     const str = data.toString('utf-8');
     const results = {
       title: file,
-      nums: str.split('\n'),
+      // eslint-disable-next-line no-await-in-loop
+      nums: await parse(str.split('\n'))
     };
+
     filesInFolder.push(results);
   }
+  
   return filesInFolder;
 }

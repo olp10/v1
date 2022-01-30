@@ -1,5 +1,6 @@
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
+import { getCalculations } from './parser.js';
 // import { getFileData } from './parser.js';
 import { getData } from './read-files.js';
 
@@ -30,24 +31,40 @@ async function makeIndex(data) {
 
 // TODO
 // Koma gögnum á sér síðu
-export async function makeDataPage(data) {
-  const title = await getData();
+export async function makeDataPage() {
+  try {
+    const page = await getData();
 
-  for (const site of data) {
-    console.info(site.title);
+    for (const data of page) {
+      const filename = join(OUTPUT_DIR, `${data.title}.html`);
+      // eslint-disable-next-line no-await-in-loop
+      const calc = await getCalculations(data);
+      // eslint-disable-next-line no-await-in-loop
+      // console.info(await getCalculations(test));
+
+      const template = `
+      <!DOCTYPE html>
+      <head>
+        <title>${data.title}</title>
+        <link rel="stylesheet" href="styles.css" />
+      </head>
+      <body>
+        <p>Max: ${calc.calculations.max}</p>
+        <p>Mean: ${calc.calculations.mean}</p>
+        <p>Median: ${calc.calculations.median}</p>
+        <p>Min: ${calc.calculations.min}</p>
+        <p>Sum: ${calc.calculations.sum}</p>
+        <p>Range: ${calc.calculations.range}</p>
+      </body>
+      `;
+      console.log(template);
+
+      // eslint-disable-next-line no-await-in-loop
+      await writeFile(filename, template);
+    }
+  } catch(e) {
+    console.warn('blabla');
   }
-
-  const template = `
-  <!DOCTYPE html>
-  <head>
-    <title>${title}</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    ${data}
-  </body>
-  `;
-  return template;
 }
 
 // Komin virkni til að búa til cols fyrir hvert gagnasett, þarf að laga fyrir
@@ -90,5 +107,9 @@ export async function make() {
   const filename = join(OUTPUT_DIR, '/index.html');
   const data = await makeDataset();
   const index = await makeIndex(data);
+  await makeDataPage();
   await writeFile(filename, index);
 }
+
+
+
