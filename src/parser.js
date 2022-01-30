@@ -8,8 +8,6 @@ export async function parse(dirtyArray) {
     num.replace(',', '.');
 
     if (!num) {
-      // console.log(dirtyArray);
-      console.info(num);
       // eslint-disable-next-line no-continue
       continue;
     }
@@ -19,7 +17,6 @@ export async function parse(dirtyArray) {
       numsToReturn.push(num);
     }
   }
-  console.info(numsToReturn);
   return numsToReturn;
 }
 
