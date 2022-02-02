@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest ./test/*.js",
-    "build": "node ./src/build.js && node-sass styles/styles.scss dist/styles.css",
-    "browser-sync": "browser-sync start --server --files index.html styles.css",
+    "build": "node ./src/build.js && node-sass ./styles/styles.scss ./src/styles.css && cpy ./src/styles.css dist",
+    "browser-sync": "browser-sync start --server --files dist/index.html dist/styles.css",
     "dev": "concurrently npm:sass-watch npm:browser-sync",
     "sass": "node-sass --source-map-embed styles/styles.scss styles.css",
     "sass-watch": "node-sass --watch styles/styles.scss --recursive styles.css",

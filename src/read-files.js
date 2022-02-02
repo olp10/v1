@@ -26,7 +26,9 @@ async function direxists(dir) {
  */
 export async function getData() {
   // Lesa skráarnöfn úr möppu
-  const files = await readdir(DATA_DIR);
+  let files = await readdir(DATA_DIR);
+  files = files.sort();
+  console.info(files);
   const filesInFolder = [];
 
   // búa til ./dist ef ekki til nú þegar
@@ -57,6 +59,6 @@ export async function getData() {
 
     filesInFolder.push(results);
   }
-  
+
   return filesInFolder;
 }

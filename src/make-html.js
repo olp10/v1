@@ -2,7 +2,6 @@
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import { getCalculations } from './parser.js';
-// import { getFileData } from './parser.js';
 import { getData } from './read-files.js';
 
 const OUTPUT_DIR = './dist';
@@ -30,19 +29,14 @@ async function makeIndex(data) {
   return template;
 }
 
-// TODO
-// Koma gögnum á sér síðu
+
 export async function makeDataPage() {
     const page = await getData();
     let template = '';
     for (const data of page) {
       const filename = join(OUTPUT_DIR, `${data.title}.html`);
       try {
-
-        // eslint-disable-next-line no-await-in-loop
         const calc = await getCalculations(data);
-        // eslint-disable-next-line no-await-in-loop
-        // console.info(await getCalculations(test));
 
         template = `
         <!DOCTYPE html>
@@ -53,21 +47,44 @@ export async function makeDataPage() {
         <body>
         <div class="grid">
         <h1>${data.title}</h1>
-          <div class="row">
-            <div class="col col-12">
-              <p>Max: ${calc.calculations.max}</p>
-              <p>Mean: ${calc.calculations.mean}</p>
-              <p>Median: ${calc.calculations.median}</p>
-              <p>Min: ${calc.calculations.min}</p>
-              <p>Sum: ${calc.calculations.sum}</p>
-              <p>Range: ${calc.calculations.range}</p>
-            </div>
+              <table>
+                <tr class="calc">
+                  <th>Calculation</th>
+                  <th>Result</th>
+                </tr>
+                <tr>
+                  <td class="calc">Max</td>
+                  <td>${calc.calculations.max}</td>
+                </tr>
+                <tr>
+                <td class="calc">Mean</td>
+                  <td>${calc.calculations.mean}</td>
+                </tr>
+                <tr>
+                <td class="calc">Median</td>
+                  <td>${calc.calculations.median}</td>
+                </tr>
+                <tr>
+                <td class="calc">Min</td>
+                  <td>${calc.calculations.min}</td>
+                </tr>
+                <tr>
+                <td class="calc">Sum</td>
+                  <td>${calc.calculations.sum}</td>
+                </tr>
+                <tr>
+                <td class="calc">Range</td>
+                  <td>${calc.calculations.range}</td>
+                </tr>
+              </table>
+
+
+
           </div>
         </div>
         </body>
         `;
 
-        // eslint-disable-next-line no-await-in-loop
         await writeFile(filename, template);
       } catch(e) {
         template = `
@@ -89,19 +106,15 @@ export async function makeDataPage() {
         `;
 
         await writeFile(filename, template);
-        console.warn('blabla');
     }
   }
 }
-
-// Komin virkni til að búa til cols fyrir hvert gagnasett, þarf að laga fyrir
-// Síðustu, jafnvel bæta fyrir responsive ef tími gefst
 
 /**
  *
  * @returns {string}
  */
-async function makeDataset() {
+export async function makeDataset() {
   // eslint-disable-next-line quotes
   let cardsTemplate = ``;
   const data = await getData();
@@ -130,7 +143,7 @@ async function makeDataset() {
   return cardsTemplate;
 }
 
-export async function make() {
+export async function makeHTML() {
   const filename = join(OUTPUT_DIR, '/index.html');
   const data = await makeDataset();
   const index = await makeIndex(data);
