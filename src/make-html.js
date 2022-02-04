@@ -1,9 +1,10 @@
 /* eslint-disable no-await-in-loop */
-import { writeFile } from 'fs/promises';
+import { readdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { getCalculations } from './parser.js';
 import { getData } from './read-files.js';
 
+const DATA_DIR = './data';
 const OUTPUT_DIR = './dist';
 
 /**
@@ -11,7 +12,7 @@ const OUTPUT_DIR = './dist';
  * @param {string} data template for files
  * @returns {string} a template
  */
-async function makeIndex(data) {
+export async function makeIndex(data) {
   const title = 'Gagnavinnsla';
   const template = `
   <!DOCTYPE html>
@@ -31,13 +32,23 @@ async function makeIndex(data) {
 
 
 export async function makeDataPage() {
-    const page = await getData();
+    const files = await readdir(DATA_DIR);
+    const page = await getData(files);
     let template = '';
+
+
     for (const data of page) {
       const filename = join(OUTPUT_DIR, `${data.title}.html`);
+
+      let dataSet = '<h2>Parsed Data:</h2><table class="data">';
+      for (let i = 0; i < data.nums.length; i += 1) {
+        dataSet += `<tr><td>${data.nums[i]}</td></tr>`
+      }
+      dataSet += '</table>'
+
+
       try {
         const calc = await getCalculations(data);
-
         template = `
         <!DOCTYPE html>
         <head>
@@ -48,7 +59,7 @@ export async function makeDataPage() {
         <div class="grid">
         <h1>${data.title}</h1>
               <table>
-                <tr class="calc">
+                <tr class="calc head">
                   <th>Calculation</th>
                   <th>Result</th>
                 </tr>
@@ -77,11 +88,11 @@ export async function makeDataPage() {
                   <td>${calc.calculations.range}</td>
                 </tr>
               </table>
-
-
-
+            <div class="row">
+              <a href="../dist/index.html">Til baka á forsíðu</a>
+            </div>
+            ${dataSet}
           </div>
-        </div>
         </body>
         `;
 
@@ -101,6 +112,9 @@ export async function makeDataPage() {
               <h1>Engin gögn voru í skránni</h1>
             </div>
           </div>
+          <div class="row">
+            <a href="../dist/index.html">Til baka á forsíðu</a>
+          </div>
         </div>
         </body>
         `;
@@ -117,7 +131,8 @@ export async function makeDataPage() {
 export async function makeDataset() {
   // eslint-disable-next-line quotes
   let cardsTemplate = ``;
-  const data = await getData();
+  const files = await readdir(DATA_DIR);
+  const data = await getData(files);
   for (let i = 0; i < data.length; i += 1) {
     const datasetTitle = data[i].title;
     const path = `${datasetTitle}.html`;

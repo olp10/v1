@@ -1,11 +1,11 @@
-import { mkdir, readdir, readFile, stat } from 'fs/promises';
+import { mkdir, readFile, stat } from 'fs/promises';
 import { join } from 'path';
 import { parse } from './parser.js';
 
 const DATA_DIR = './data';
 const OUTPUT_DIR = './dist';
 
-// Klárt fall til að athuga hvort mappa sé til
+
 /**
  *
  * @param {string} dir
@@ -24,9 +24,9 @@ async function direxists(dir) {
  *
  * @returns {object} object with title and an array with supposed numbers
  */
-export async function getData() {
+export async function getData(dir) {
   // Lesa skráarnöfn úr möppu
-  let files = await readdir(DATA_DIR);
+  let files = dir;
   files = files.sort();
   console.info(files);
   const filesInFolder = [];

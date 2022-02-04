@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 
-describe.skip('html', () => {
-  it.only('makes html', () => {
-    expect(5).toBe(5);
+describe('Check if directory exists', () => {
+  it.only('returns true or false', () => {
+
+    expect(true).toBe(true);
   });
 });

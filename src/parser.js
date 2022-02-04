@@ -1,11 +1,11 @@
 import { max, mean, median, min, sum } from 'mathjs';
 
-export async function parse(dirtyArray) {
+export function parse(dirtyArray) {
   const numsToReturn = [];
   for (let num of dirtyArray) {
-    num.replace('.', '');
-    num = num.trim();
-    num.replace(',', '.');
+    num.toString().replace('.', '');
+    num = num.toString().trim();
+    num.toString().replace(',', '.');
 
     if (!num) {
       // eslint-disable-next-line no-continue
