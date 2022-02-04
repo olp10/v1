@@ -221,8 +221,8 @@ table td {
   padding: 5px; }
 
 tr .calc {
-  text-align: left;
-  margin: auto; }
+  margin: auto;
+  text-align: left; }
 
 a {
   margin: auto;
